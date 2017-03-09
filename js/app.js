@@ -64,31 +64,22 @@ library.prototype.removeBookByTitle = function(bookTitle){ // in console, pass a
     }
   } return false;
 };
-    // Gavin's map function
-    // var numberOfBooks = this.bookArray.length;
-    // this.bookArray.map((book, index)=>{
-    //   if (book.title == bookTitle) {
-    //     this.bookArray.splice(index, 1);
-    //   }
-    // })
-
-      // return (this.bookArray.length == numberOfBooks) ? false : true
 
 // REMOVE BOOK BY AUTHOR
 library.prototype.removeBookByAuthor = function(bookAuthor){ // in console, pass actual author name
-  for (var i = 0; i < this.bookArray.length; i++) {
+	var isAuthorRemoved = false;
+	for (var i = 0; i < this.bookArray.length; i++) {
     if (this.bookArray[i].author == bookAuthor) {
       this.bookArray.splice(i, 1);
-      return true;
+      isAuthorRemoved = true;
     }
-  } return false;
+  } return isAuthorRemoved;
 };
 
-// GET RANDOM BOOK (& GET RANDOM AUTHOR)
+// GET RANDOM BOOK
 library.prototype.getRandomBook = function(){
   var randomBook = Math.floor(Math.random() * this.bookArray.length);
   return this.bookArray.length <= 0 ? null : this.bookArray[randomBook];
-  // return this.bookArray.length <= 0 ? null : this.bookArray[randomBook].author; // get random author
 };
 // another way of doing Math.random:
 // var max = this.bookArray.length;
@@ -118,14 +109,15 @@ library.prototype.getBookByAuthor = function(author){ // in console, pass actual
   } return bookByAuthorArray;
 };
 
-// ADD BOOKS
-library.prototype.addBooks = function(array){ // blah = whatever I'm adding (passing through)
-  for (var i = 0; i < array.length; i++) {
-    this.bookArray.push(array[i]);
+// ADD BOOKS (won't add duplicates)
+library.prototype.addBooks = function(array){ // blah = whatever I'm passing in
+	var counter = 0;
+	for (var i = 0; i < array.length; i++) {
+  	if (this.addBook(array[i])){
+			counter ++;
+		}
   }
-  if (array.length !== 0) {
-      return array.length;
-  } return 0;
+  return counter;
 };
 
 // GET AUTHORS

@@ -1,9 +1,9 @@
 // Constructor that creates class called "library" (global)
-var library = function() {};
-// creates new instance of 'library'
-var library1 = new library();
+var library = function(){
+};
+
 // creates new empty array called bookArray and assigns it to "library"
-library.prototype.bookArray = new Array(); // could also be "= []"
+// library.prototype.bookArray = new Array(); // could also be "= []"
 
 // function that creates new book objects, using Object constructor
 function createBook(bookTitle, bookAuthor, bookNumberOfPages, bookPublishDate){
@@ -14,45 +14,72 @@ function createBook(bookTitle, bookAuthor, bookNumberOfPages, bookPublishDate){
 	this.publishDate = bookPublishDate;
 };
 
-// GAVIN'S REFACTOR - function to assign createBook to library and push the books into the bookArray
-// library.prototype.createBook = function(bookTitle, bookAuthor, bookNumberOfPages, bookPublishDate){
-//   var book = {};
-// 	//properties
-// 	book.title = bookTitle;
-// 	book.author = bookAuthor;
-// 	book.numberOfPages = bookNumberOfPages;
-// 	book.publishDate = bookPublishDate;
-//
-//   this.bookArray.push(book);
-// }
+// Shorthand for $( document ).ready()
+$(function(){
+		// creates new instance of 'library'
+		window.library1 = new library();
+		window.library1.init();
 
-//declaring variables and assigning new instances of our newBook class
-var book1 = new createBook("War and Peace","Leo Tolstoy", 140, 1869);
-var book2 = new createBook("Don Quixote","Miguel de Cervantes", 300, 1615);
-var book3 = new createBook("Hamlet","William Shakespeare", 220, 1601);
-var book4 = new createBook("To the Lighthouse","Virginia Woolf", 400, 1927);
-var book5 = new createBook("Anna Karenina","Leo Tolstoy", 150, 1877);
-var book6 = new createBook("Dubliners","James Joyce", 400, 1914);
-var book7 = new createBook("One Hundred Years of Solitude","Gabriel García Márquez", 320, 1967);
+		//declaring variables and assigning new instances of our newBook class
+		// window.book1 = new createBook("War and Peace","Leo Tolstoy", 140, 1869);
+		// window.book2 = new createBook("Don Quixote","Miguel de Cervantes", 300, 1615);
+		// window.book3 = new createBook("Hamlet","William Shakespeare", 220, 1601);
+		// window.book4 = new createBook("To the Lighthouse","Virginia Woolf", 400, 1927);
+		// window.book5 = new createBook("Anna Karenina","Leo Tolstoy", 150, 1877);
+		// window.book6 = new createBook("Dubliners","James Joyce", 400, 1914);
+		// window.book7 = new createBook("One Hundred Years of Solitude","Gabriel García Márquez", 320, 1967);
+});
 
-// GAVIN'S REFACTOR for declaring variables:
-// var book1 = library.prototype.createBook("War and Peace","Leo Tolstoy", 140, 1869);
-// var book2 = library.prototype.createBook("Don Quixote","Miguel de Cervantes", 300, 1615);
-// var book3 = library.prototype.createBook("Hamlet","William Shakespeare", 220, 1601);
-// var book4 = library.prototype.createBook("To the Lighthouse","Virginia Woolf", 400, 1927);
+library.prototype.init = function(){
+	//Cached selectors here (cache down) that will be reused throughout app
+	this.$jumboTron = $(".jumbotron ul"); // target the output field in html
+	// this.$jumboTron.append("<li>" + book.title + "</li>");
 
+	this.bookArray = new Array();
+
+	// methods to kick off on DOM ready
+	this._bindEvents(); //underscore designates that it's private
+};
+
+// Proxy
+library.prototype._bindEvents = function(){
+	$('#add-book').on('click', $.proxy(this._addBook, this));
+	$('#add-book').click(function(){
+  	$('input[type="text"]').val('');
+});
+	// $("")
+}
 
 //CREATE PROTOTYPE FUNCTIONS:
 
 // ADD BOOK
 // creates function called addBook and assigns it to "library"
-library.prototype.addBook = function(blah){ // blah = new instance that I'm passing in
-  for (var i = 0; i < this.bookArray.length; i++) {
-    if (this.bookArray[i].title == blah.title) {
-    return false;
+library.prototype._addBook = function(){
+	var aValues = this._getAddBookValues();
+	if (aValues.length >= 4) {
+		var book = new createBook(aValues[0], aValues[1], aValues[2], aValues[3]);
+		for (var i = 0; i < this.bookArray.length; i++) {
+			if (this.bookArray[i].title == book.title) {
+			return false;
+			}
+		}
+		this.bookArray.push(book);
+		this.$jumboTron.append("<li>" + book.title + "; " + book.author + "; " + book.numberOfPages + "; " + book.publishDate + "</li>");
+		return true;
+	}
+	return alert('Please make sure all fields are filled out.');
+};
+
+library.prototype._getAddBookValues = function(){
+  var aVals = new Array();
+  $("#new-book-form input").each(function(index, val){
+    var vInput = $(this).val();
+    if(vInput !== "" && vInput != NaN) {
+      aVals.push($(this).val());
     }
-  } this.bookArray.push(blah);
-    return true;
+  });
+
+  return aVals;
 };
 
 // REMOVE BOOK BY TITLE
@@ -141,3 +168,12 @@ library.prototype.getRandomAuthor = function(){ // in console,
 // library1.addBook(book2);
 // library1.addBook(book3);
 // library1.addBook(book4);
+
+// add this to slacked snippet:
+// this.$jumboTron.append("<li>" + book.title + "</li>");
+// return true;
+
+//local storage start:
+library.prototype._setObject = function (){
+	// set bookArray to some variable in localstorage
+};

@@ -33,8 +33,10 @@ $(function(){
 library.prototype.init = function(){
 	//Cached selectors here (cache down) that will be reused throughout app
 	this.$jumboTron = $(".jumbotron ul"); // target the output field in html
-	// this.$jumboTron.append("<li>" + book.title + "</li>");
-
+	// this.bookOutput = "<li><strong>Title: </strong>" + _addBook.title + "; " +
+	// 	" <strong>Author: </strong>" + _addBook.author + "; " +
+	// 	" <strong>Pages: </strong>" + _addBook.numberOfPages + "; " +
+	// 	" <strong>Published: </strong>" + _addBook.publishDate + "</li>";
 	this.bookArray = new Array();
 
 	// methods to kick off on DOM ready
@@ -46,30 +48,43 @@ library.prototype._bindEvents = function(){
 	$('#add-book').on('click', $.proxy(this._addBook, this));
 	$('#add-book').click(function(){
   	$('input[type="text"]').val('');
-});
-	// $("")
-}
+	});
+	$('#remove-book-by-title').on('click', $.proxy(this._removeBookByTitle, this));
+	$('#remove-book-by-title').click(function(){
+		$('input[type="text"]').val('');
+	});
+};
 
 //CREATE PROTOTYPE FUNCTIONS:
 
 // ADD BOOK
 // creates function called addBook and assigns it to "library"
 library.prototype._addBook = function(){
-	var aValues = this._getAddBookValues();
-	if (aValues.length >= 4) {
-		var book = new createBook(aValues[0], aValues[1], aValues[2], aValues[3]);
+	var aValue = this._getAddBookValues();
+	// validate that new array has at least 4 values
+	if (aValue.length >= 4) {
+		// create container called 'book' to hold new createBook
+		var book = new createBook(aValue[0], aValue[1], aValue[2], aValue[3]);
+		// loop through bookArray and check for duplicates
 		for (var i = 0; i < this.bookArray.length; i++) {
 			if (this.bookArray[i].title == book.title) {
-			return false;
+			// if duplicate book, return alert
+			return alert('Sorry, that book has already been added');
 			}
 		}
+		// otherwise, add new createBook to bookArray
 		this.bookArray.push(book);
-		this.$jumboTron.append("<li>" + book.title + "; " + book.author + "; " + book.numberOfPages + "; " + book.publishDate + "</li>");
+		// append new book as li to ul in the html jumbotron
+		this.$jumboTron.append("<li><strong>Title: </strong>" + book.title + "; " +
+			" <strong>Author: </strong>" + book.author + "; " +
+			" <strong>Pages: </strong>" + book.numberOfPages + "; " +
+			" <strong>Published: </strong>" + book.publishDate + "</li>");
+		// this.$jumboTron.append(this.bookOutput); why won't this work??
 		return true;
 	}
 	return alert('Please make sure all fields are filled out.');
 };
-
+// function that creates new array containing values from input fields
 library.prototype._getAddBookValues = function(){
   var aVals = new Array();
   $("#new-book-form input").each(function(index, val){
@@ -78,18 +93,37 @@ library.prototype._getAddBookValues = function(){
       aVals.push($(this).val());
     }
   });
-
   return aVals;
 };
 
 // REMOVE BOOK BY TITLE
-library.prototype.removeBookByTitle = function(bookTitle){ // in console, pass actual book title
-  for (var i = 0; i < this.bookArray.length; i++) {
-    if (this.bookArray[i].title == bookTitle) {
+library.prototype._removeBookByTitle = function(){
+	// create container called sValue that contains the string collected from input
+	var sValue = this._getRemoveBookTitleValue();
+	// loop through bookArray to check whether input field matches a book in the array
+	for (var i = 0; i < this.bookArray.length; i++) {
+    if (this.bookArray[i].title == sValue) {
+			// if it matches, remove it from the array
       this.bookArray.splice(i, 1);
+			// update output display to reflect removal
+			$('li').remove();  // ****** STUCK HERE! This removes all list items
       return true;
     }
-  } return false;
+	// if it doesn't match, return alert
+  } return alert('Unable to find book with that title.');
+};
+// use jquery to find id of input field
+// validate that input is not empty string or NaN
+// return string and feed into removeBookByTitle function
+library.prototype._getRemoveBookTitleValue = function(){
+  var sVal;
+  $("#remove-book-title-form input").each(function(index, val){
+    var vInput = $(this).val();
+    if(vInput !== "" && vInput != NaN) {
+      sVal = vInput.toString();
+    }
+  });
+  return sVal;
 };
 
 // REMOVE BOOK BY AUTHOR
@@ -169,11 +203,16 @@ library.prototype.getRandomAuthor = function(){ // in console,
 // library1.addBook(book3);
 // library1.addBook(book4);
 
-// add this to slacked snippet:
-// this.$jumboTron.append("<li>" + book.title + "</li>");
-// return true;
+
 
 //local storage start:
 library.prototype._setObject = function (){
+	// console.log('test');
+	var cachedArray = this.bookArray;
 	// set bookArray to some variable in localstorage
 };
+
+// // Store
+// localStorage.cachedArray = "Smith";
+// // Retrieve
+// document.getElementById("result").innerHTML = localStorage.lastname;

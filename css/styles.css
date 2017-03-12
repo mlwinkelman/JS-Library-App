@@ -1,10 +1,15 @@
+#bootstrap-override .border-radius {
+  border-radius: 1em;
+}
 .output-box {
   background-color: white;
+  padding: 15px 0;
+  border-radius: 6px;
 }
-
-/*input::placeholder {
-  color: pink
-}*/
+ul {
+  list-style: none;
+  -webkit-padding-start: 20px;
+}
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #B8B8B8 !important;
@@ -17,4 +22,8 @@
 }
 :-moz-placeholder { /* Firefox 18- */
   color: #B8B8B8 !important;
+}
+.icons {
+  height: 100px;
+  padding-right: 30px;
 }

@@ -6,12 +6,13 @@ var library = function(){
 // library.prototype.bookArray = new Array(); // could also be "= []"
 
 // function that creates new book objects, using Object constructor
-function createBook(bookTitle, bookAuthor, bookNumberOfPages, bookPublishDate){
+function createBook(bookTitle, bookAuthor, bookNumberOfPages, bookPublishDate, guid){
 	//properties
 	this.title = bookTitle;
 	this.author = bookAuthor;
 	this.numberOfPages = bookNumberOfPages;
 	this.publishDate = bookPublishDate;
+	this.id = "id-" + guid;
 };
 
 // Shorthand for $( document ).ready()
@@ -33,10 +34,7 @@ $(function(){
 library.prototype.init = function(){
 	//Cached selectors here (cache down) that will be reused throughout app
 	this.$jumboTron = $(".jumbotron ul"); // target the output field in html
-	// this.bookOutput = "<li><strong>Title: </strong>" + _addBook.title + "; " +
-	// 	" <strong>Author: </strong>" + _addBook.author + "; " +
-	// 	" <strong>Pages: </strong>" + _addBook.numberOfPages + "; " +
-	// 	" <strong>Published: </strong>" + _addBook.publishDate + "</li>";
+
 	this.bookArray = new Array();
 
 	// methods to kick off on DOM ready
@@ -53,9 +51,31 @@ library.prototype._bindEvents = function(){
 	$('#remove-book-by-title').click(function(){
 		$('input[type="text"]').val('');
 	});
+	$('#remove-book-by-author').on('click', $.proxy(this._removeBookByAuthor, this));
+	$('#remove-book-by-author').click(function(){
+		$('input[type="text"]').val('');
+	});
+	$('#get-book-by-title').on('click', $.proxy(this._getBookByTitle, this));
+	$('#get-book-by-title').click(function(){
+		$('input[type="text"]').val('');
+	});
+	$('#get-book-by-author').on('click', $.proxy(this._getBookByAuthor, this));
+	$('#get-book-by-author').click(function(){
+		$('input[type="text"]').val('');
+	});
+	$('#get-random-book').on('click', $.proxy(this._getRandomBook, this));
+	$('#get-random-author').on('click', $.proxy(this._getRandomAuthor, this));
+	$('#get-all-authors').on('click', $.proxy(this._getAuthors, this));
+
 };
 
 //CREATE PROTOTYPE FUNCTIONS:
+// ADD GUID methods
+library.prototype._guid = function(){
+	return Math.floor((1 + Math.random()) * 0x10000)
+     .toString(8)
+     .substring(1);
+};
 
 // ADD BOOK
 // creates function called addBook and assigns it to "library"
@@ -64,7 +84,7 @@ library.prototype._addBook = function(){
 	// validate that new array has at least 4 values
 	if (aValue.length >= 4) {
 		// create container called 'book' to hold new createBook
-		var book = new createBook(aValue[0], aValue[1], aValue[2], aValue[3]);
+		var book = new createBook(aValue[0], aValue[1], aValue[2], aValue[3], this._guid());
 		// loop through bookArray and check for duplicates
 		for (var i = 0; i < this.bookArray.length; i++) {
 			if (this.bookArray[i].title == book.title) {
@@ -75,11 +95,10 @@ library.prototype._addBook = function(){
 		// otherwise, add new createBook to bookArray
 		this.bookArray.push(book);
 		// append new book as li to ul in the html jumbotron
-		this.$jumboTron.append("<li><strong>Title: </strong>" + book.title + "; " +
+		this.$jumboTron.append("<li id="+book.id+"><strong>Title: </strong>" + book.title + "; " +
 			" <strong>Author: </strong>" + book.author + "; " +
 			" <strong>Pages: </strong>" + book.numberOfPages + "; " +
 			" <strong>Published: </strong>" + book.publishDate + "</li>");
-		// this.$jumboTron.append(this.bookOutput); why won't this work??
 		return true;
 	}
 	return alert('Please make sure all fields are filled out.');
@@ -102,15 +121,18 @@ library.prototype._removeBookByTitle = function(){
 	var sValue = this._getRemoveBookTitleValue();
 	// loop through bookArray to check whether input field matches a book in the array
 	for (var i = 0; i < this.bookArray.length; i++) {
+		// debugger;
     if (this.bookArray[i].title == sValue) {
+			// update output display to reflect removal
+			$('#'+this.bookArray[i].id).remove();
 			// if it matches, remove it from the array
       this.bookArray.splice(i, 1);
-			// update output display to reflect removal
-			$('li').remove();  // ****** STUCK HERE! This removes all list items
       return true;
-    }
-	// if it doesn't match, return alert
-  } return alert('Unable to find book with that title.');
+			// if it doesn't match, return alert
+    }  //else if (this.bookArray[i].title != sValue) {
+			//return alert('Unable to find that book.');
+		// }
+} return alert('Please add a title to remove.');
 };
 // use jquery to find id of input field
 // validate that input is not empty string or NaN
@@ -123,33 +145,51 @@ library.prototype._getRemoveBookTitleValue = function(){
       sVal = vInput.toString();
     }
   });
+	// console.log(sVal);
   return sVal;
 };
 
 // REMOVE BOOK BY AUTHOR
-library.prototype.removeBookByAuthor = function(bookAuthor){ // in console, pass actual author name
+library.prototype._removeBookByAuthor = function(bookAuthor){
+	// create container called sValue that contains the string collected from input
+	var sValue = this._getRemoveBookAuthorValue();
 	var isAuthorRemoved = false;
 	for (var i = 0; i < this.bookArray.length; i++) {
-    if (this.bookArray[i].author == bookAuthor) {
+    if (this.bookArray[i].author == sValue) {
+			// update output display to reflect removal
+			$('#'+this.bookArray[i].id).remove();
       this.bookArray.splice(i, 1);
       isAuthorRemoved = true;
     }
   } return isAuthorRemoved;
 };
 
-// GET RANDOM BOOK
-library.prototype.getRandomBook = function(){
-  var randomBook = Math.floor(Math.random() * this.bookArray.length);
-  return this.bookArray.length <= 0 ? null : this.bookArray[randomBook];
+library.prototype._getRemoveBookAuthorValue = function(){
+  var sVal;
+  $("#remove-book-author-form input").each(function(index, val){
+    var vInput = $(this).val();
+    if(vInput !== "" && vInput != NaN) {
+      sVal = vInput.toString();
+    }
+  });
+  return sVal;
 };
-// another way of doing Math.random:
-// var max = this.bookArray.length;
-// var min = 0;
-// var randomBook = (Math.floor(Math.random() * (max - min)) + min);
-// return this.bookArray(randomBook);
+
+// GET RANDOM BOOK
+library.prototype._getRandomBook = function(){
+  var randomBook = Math.floor(Math.random() * this.bookArray.length);
+	var book = this.bookArray[randomBook];
+	this.$jumboTron.append("<li><strong>Title: </strong>" + book.title + "; " +
+		" <strong>Author: </strong>" + book.author + "; " +
+		" <strong>Pages: </strong>" + book.numberOfPages + "; " +
+		" <strong>Published: </strong>" + book.publishDate + "</li>");
+	console.log(randomBook);
+  return this.bookArray.length <= 0 ? null : this.bookArray[randomBook];
+
+};
 
 // GET BOOK BY TITLE
-library.prototype.getBookByTitle = function(title){ // in console, pass actual author name
+library.prototype._getBookByTitle = function(title){ // in console, pass actual author name
   var regex = new RegExp(title, 'gi');
   var bookByTitleArray = new Array();
   for (var i = 0; i < this.bookArray.length; i++) {
@@ -160,7 +200,7 @@ library.prototype.getBookByTitle = function(title){ // in console, pass actual a
 };
 
 // GET BOOK BY AUTHOR
-library.prototype.getBookByAuthor = function(author){ // in console, pass actual author name
+library.prototype._getBookByAuthor = function(author){ // in console, pass actual author name
   var regex = new RegExp(author, 'gi');
   var bookByAuthorArray = new Array();
   for (var i = 0; i < this.bookArray.length; i++) {
@@ -182,7 +222,7 @@ library.prototype.addBooks = function(array){ // blah = whatever I'm passing in
 };
 
 // GET AUTHORS
-library.prototype.getAuthors = function(){
+library.prototype._getAuthors = function(){
   var authorArray = [];
   for (var i = 0; i < this.bookArray.length; i++) {
     if (authorArray.indexOf(this.bookArray[i].author) < 0){ // checking for duplicates, or not in there
@@ -193,7 +233,7 @@ library.prototype.getAuthors = function(){
 
 
 // GET RANDOM AUTHOR
-library.prototype.getRandomAuthor = function(){ // in console,
+library.prototype._getRandomAuthor = function(){ // in console,
   var randomAuthor = Math.floor(Math.random() * this.bookArray.length);
   return this.bookArray.length <= 0 ? null : this.bookArray[randomAuthor].author;
 };

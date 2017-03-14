@@ -179,13 +179,23 @@ library.prototype._getRemoveBookAuthorValue = function(){
 library.prototype._getRandomBook = function(){
   var randomBook = Math.floor(Math.random() * this.bookArray.length);
 	var book = this.bookArray[randomBook];
-	this.$jumboTron.append("<li><strong>Title: </strong>" + book.title + "; " +
+	this.$jumboTron.append("<li id="+book.id+"><strong>Title: </strong>" + book.title + "; " +
 		" <strong>Author: </strong>" + book.author + "; " +
 		" <strong>Pages: </strong>" + book.numberOfPages + "; " +
 		" <strong>Published: </strong>" + book.publishDate + "</li>");
-	console.log(randomBook);
+	// console.log(randomBook);
   return this.bookArray.length <= 0 ? null : this.bookArray[randomBook];
+};
 
+// GET RANDOM AUTHOR
+library.prototype._getRandomAuthor = function(){ // in console,
+  var randomAuthor = Math.floor(Math.random() * this.bookArray.length);
+	var book = this.bookArray[randomAuthor];
+	this.$jumboTron.append("<li id="+book.id+"><strong>Title: </strong>" + book.title + "; " +
+		" <strong>Author: </strong>" + book.author + "; " +
+		" <strong>Pages: </strong>" + book.numberOfPages + "; " +
+		" <strong>Published: </strong>" + book.publishDate + "</li>");
+  return this.bookArray.length <= 0 ? null : this.bookArray[randomAuthor].author;
 };
 
 // GET BOOK BY TITLE
@@ -228,15 +238,14 @@ library.prototype._getAuthors = function(){
     if (authorArray.indexOf(this.bookArray[i].author) < 0){ // checking for duplicates, or not in there
       authorArray.push(this.bookArray[i].author);
     }
-  } return authorArray;
+  }
+	// console.log(authorArray);
+	this.$jumboTron.append("<li><strong>Authors in Library: </strong>" + authorArray.join(', ') + "</li>");
+	return authorArray;
 };
 
 
-// GET RANDOM AUTHOR
-library.prototype._getRandomAuthor = function(){ // in console,
-  var randomAuthor = Math.floor(Math.random() * this.bookArray.length);
-  return this.bookArray.length <= 0 ? null : this.bookArray[randomAuthor].author;
-};
+
 
 // library1.addBook(book1);
 // library1.addBook(book2);

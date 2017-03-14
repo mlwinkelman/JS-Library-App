@@ -2,9 +2,6 @@
 var library = function(){
 };
 
-// creates new empty array called bookArray and assigns it to "library"
-// library.prototype.bookArray = new Array(); // could also be "= []"
-
 // function that creates new book objects, using Object constructor
 function createBook(bookTitle, bookAuthor, bookNumberOfPages, bookPublishDate, guid){
 	//properties
@@ -35,6 +32,7 @@ library.prototype.init = function(){
 	//Cached selectors here (cache down) that will be reused throughout app
 	this.$jumboTron = $(".jumbotron ul"); // target the output field in html
 
+	// creates new empty array called bookArray and assigns it to "library"
 	this.bookArray = new Array();
 
 	// methods to kick off on DOM ready
@@ -70,7 +68,8 @@ library.prototype._bindEvents = function(){
 };
 
 //CREATE PROTOTYPE FUNCTIONS:
-// ADD GUID methods
+// ADD GUID methods to add unique random id when a new book is created
+// so there is something to target when removing a book
 library.prototype._guid = function(){
 	return Math.floor((1 + Math.random()) * 0x10000)
      .toString(8)
@@ -115,6 +114,37 @@ library.prototype._getAddBookValues = function(){
   return aVals;
 };
 
+// GET BOOK BY TITLE
+library.prototype._getBookByTitle = function(){ // in console, pass actual author name
+	// create container called sValue that contains the string collected from input
+	var sValue = this._getBookTitleValue();
+	var regex = new RegExp(sValue, 'gi');
+  var bookByTitleArray = new Array();
+  for (var i = 0; i < this.bookArray.length; i++) {
+    if (this.bookArray[i].title.match(regex)) {
+      bookByTitleArray.push(this.bookArray[i]);
+    }
+  }
+	console.log(bookByTitleArray);
+	// NEED TO ADD DISPLAY OUTPUT!!
+	return bookByTitleArray;
+};
+
+// use jquery to find id of input field
+// validate that input is not empty string or NaN
+// return string and feed into removeBookByTitle function
+library.prototype._getBookTitleValue = function(){
+  var sVal;
+  $("#get-book-by-title-form input").each(function(index, val){
+    var vInput = $(this).val();
+    if(vInput !== "" && vInput != NaN) {
+      sVal = vInput.toString();
+    }
+  });
+	console.log(sVal);
+  return sVal;
+};
+
 // REMOVE BOOK BY TITLE
 library.prototype._removeBookByTitle = function(){
 	// create container called sValue that contains the string collected from input
@@ -146,6 +176,33 @@ library.prototype._getRemoveBookTitleValue = function(){
     }
   });
 	// console.log(sVal);
+  return sVal;
+};
+
+// GET BOOK BY AUTHOR
+library.prototype._getBookByAuthor = function(){ // in console, pass actual author name
+	// create container called sValue that contains the string collected from input
+	var sValue = this._getBookByAuthorValue();
+	var regex = new RegExp(sValue, 'gi');
+  var bookByAuthorArray = new Array();
+  for (var i = 0; i < this.bookArray.length; i++) {
+    if (this.bookArray[i].author.match(regex)) {
+      bookByAuthorArray.push(this.bookArray[i]);
+    }
+  }
+	console.log(bookByAuthorArray);
+	// NEED TO ADD DISPLAY OUTPUT!!!!!
+	return bookByAuthorArray;
+};
+
+library.prototype._getBookByAuthorValue = function(){
+  var sVal;
+  $("#get-book-by-author-form input").each(function(index, val){
+    var vInput = $(this).val();
+    if(vInput !== "" && vInput != NaN) {
+      sVal = vInput.toString();
+    }
+  });
   return sVal;
 };
 
@@ -198,38 +255,16 @@ library.prototype._getRandomAuthor = function(){ // in console,
   return this.bookArray.length <= 0 ? null : this.bookArray[randomAuthor].author;
 };
 
-// GET BOOK BY TITLE
-library.prototype._getBookByTitle = function(title){ // in console, pass actual author name
-  var regex = new RegExp(title, 'gi');
-  var bookByTitleArray = new Array();
-  for (var i = 0; i < this.bookArray.length; i++) {
-    if (this.bookArray[i].title.match(regex)) {
-      bookByTitleArray.push(this.bookArray[i]);
-    }
-  } return bookByTitleArray;
-};
-
-// GET BOOK BY AUTHOR
-library.prototype._getBookByAuthor = function(author){ // in console, pass actual author name
-  var regex = new RegExp(author, 'gi');
-  var bookByAuthorArray = new Array();
-  for (var i = 0; i < this.bookArray.length; i++) {
-    if (this.bookArray[i].author.match(regex)) {
-      bookByAuthorArray.push(this.bookArray[i]);
-    }
-  } return bookByAuthorArray;
-};
-
 // ADD BOOKS (won't add duplicates)
-library.prototype.addBooks = function(array){ // blah = whatever I'm passing in
-	var counter = 0;
-	for (var i = 0; i < array.length; i++) {
-  	if (this.addBook(array[i])){
-			counter ++;
-		}
-  }
-  return counter;
-};
+// library.prototype.addBooks = function(array){ // blah = whatever I'm passing in
+// 	var counter = 0;
+// 	for (var i = 0; i < array.length; i++) {
+//   	if (this.addBook(array[i])){
+// 			counter ++;
+// 		}
+//   }
+//   return counter;
+// };
 
 // GET AUTHORS
 library.prototype._getAuthors = function(){

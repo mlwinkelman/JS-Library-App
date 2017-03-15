@@ -43,24 +43,37 @@ library.prototype.init = function(){
 // Proxy
 library.prototype._bindEvents = function(){
 	$('#add-book').on('click', $.proxy(this._addBook, this));
-	$('#add-book').click(function(){
-  	$('input[type="text"]').val('');
+	$('#add-book-input-published').keyup(function(event){
+		if(event.keyCode == 13){
+			$('#add-book').click();
+		}
 	});
 	$('#remove-book-by-title').on('click', $.proxy(this._removeBookByTitle, this));
-	$('#remove-book-by-title').click(function(){
-		$('input[type="text"]').val('');
+	// $('#remove-book-by-title').click(function(){
+	// 	$('input[type="text"]').val('');
+	// });
+	$('#remove-book-title-input').keyup(function(event){
+		if(event.keyCode == 13){
+			$('#remove-book-by-title').click();
+		}
 	});
 	$('#remove-book-by-author').on('click', $.proxy(this._removeBookByAuthor, this));
-	$('#remove-book-by-author').click(function(){
-		$('input[type="text"]').val('');
+	$('#remove-book-author-input').keyup(function(event){
+		if(event.keyCode == 13){
+			$('#remove-book-by-author').click();
+		}
 	});
 	$('#get-book-by-title').on('click', $.proxy(this._getBookByTitle, this));
-	$('#get-book-by-title').click(function(){
-		$('input[type="text"]').val('');
+	$('#get-book-title-input').keyup(function(event){
+		if(event.keyCode == 13){
+			$('#get-book-by-title').click();
+		}
 	});
 	$('#get-book-by-author').on('click', $.proxy(this._getBookByAuthor, this));
-	$('#get-book-by-author').click(function(){
-		$('input[type="text"]').val('');
+	$('#get-book-author-input').keyup(function(event){
+		if(event.keyCode == 13){
+			$('#get-book-by-author').click();
+		}
 	});
 	$('#get-random-book').on('click', $.proxy(this._getRandomBook, this));
 	$('#get-random-author').on('click', $.proxy(this._getRandomAuthor, this));
@@ -81,6 +94,7 @@ library.prototype._guid = function(){
 // creates function called addBook and assigns it to "library"
 library.prototype._addBook = function(){
 	var aValue = this._getAddBookValues();
+	$('input[type="text"]').val('');
 	// validate that new array has at least 4 values
 	if (aValue.length >= 4) {
 		// create container called 'book' to hold new createBook
@@ -94,6 +108,7 @@ library.prototype._addBook = function(){
 		}
 		// otherwise, add new createBook to bookArray
 		this.bookArray.push(book);
+		// library1.setObject(book);
 		// append new book as li to ul in the html jumbotron
 		this.$jumboTron.append("<li id="+book.id+"><strong>Title: </strong>" + book.title + "; " +
 			" <strong>Author: </strong>" + book.author + "; " +
@@ -119,6 +134,7 @@ library.prototype._getAddBookValues = function(){
 library.prototype._getBookByTitle = function(){ // in console, pass actual author name
 	// create container called sValue that contains the string collected from input
 	var sValue = this._getBookTitleValue();
+	$('input[type="text"]').val('');
 	var regex = new RegExp(sValue, 'gi');
   // var bookByTitleArray = new Array();
   for (var i = 0; i < this.bookArray.length; i++) {
@@ -129,7 +145,13 @@ library.prototype._getBookByTitle = function(){ // in console, pass actual autho
 				" <strong>Author: </strong>" + this.bookArray[i].author + "; " +
 				" <strong>Pages: </strong>" + this.bookArray[i].numberOfPages + "; " +
 				" <strong>Published: </strong>" + this.bookArray[i].publishDate + "</li>");
+				// i--;
     }
+		// else {
+		// 	this.$jumboTron2.empty();
+		// 	this.$jumboTron2.append("<li>Title not found.</li>")
+			// i--;
+
   }
 	// return alert('Please enter a title.');
 	// return bookByTitleArray;
@@ -153,6 +175,7 @@ library.prototype._getBookTitleValue = function(){
 library.prototype._removeBookByTitle = function(){
 	// create container called sValue that contains the string collected from input
 	var sValue = this._getRemoveBookTitleValue();
+	$('input[type="text"]').val('');
 	// loop through bookArray to check whether input field matches a book in the array
 	for (var i = 0; i < this.bookArray.length; i++) {
 		// debugger;
@@ -184,6 +207,7 @@ library.prototype._getRemoveBookTitleValue = function(){
 library.prototype._getBookByAuthor = function(){ // in console, pass actual author name
 	// create container called sValue that contains the string collected from input
 	var sValue = this._getBookByAuthorValue();
+	$('input[type="text"]').val('');
 	var regex = new RegExp(sValue, 'gi');
   // var bookByAuthorArray = [];
 	this.$jumboTron2.empty();
@@ -216,21 +240,24 @@ library.prototype._getBookByAuthorValue = function(){
 library.prototype._removeBookByAuthor = function(){
 	// create container called sValue that contains the string collected from input
 	var sValue = this._getRemoveBookAuthorValue();
-	// var regex = new RegExp(sValue, 'gi');
+	$('input[type="text"]').val('');
 	var isAuthorRemoved = false;
-	// for (var i = 0; i < this.bookArray.length; i++) {
-  //   if (this.bookArray[i].author.match(regex)) {
-
 	for (var i = 0; i < this.bookArray.length; i++) {
     if (this.bookArray[i].author == sValue) {
 			// update output display to reflect removal
-			$('#'+this.bookArray[i].id).remove(); // IS THIS FLAWED DUE TO GUID??
+			$('#'+this.bookArray[i].id).remove();
       this.bookArray.splice(i, 1);
       isAuthorRemoved = true;
+			i--;
     }
+		// else if(this.bookArray[i].author != sValue) {
+		// 	return alert('Unable to find that author.');
+		// }
   }
-	// return alert('Unable to find that author.'); // ALERT IS FIRING EVERYTIME!!
+	// console.log(isAuthorRemoved);
 	// return isAuthorRemoved;
+	// return alert('Unable to find that author.'); // ALERT IS FIRING EVERYTIME!!
+
 };
 
 library.prototype._getRemoveBookAuthorValue = function(){
@@ -302,12 +329,21 @@ library.prototype._getAuthors = function(){
 
 
 //local storage start:
-// library.prototype._setObject = function (){
-// 	// console.log('test');
-// 	var cachedArray = this.bookArray;
-// 	// set bookArray to some variable in localstorage
-// };
+library.prototype.setObject = function() {
+	if(typeof(Storage) !=="undefined") {
+		localstorage['storageArray'] = JSON.stringify(this.bookArray);
+	} else {
+		return false;
+	}
+};
 
+library.prototype.getObject = function() {
+	if(typeof(Storage) !=="undefined") {
+		return JSON.parse(localStorage.getItem('storageArray'));
+	} else {
+		return false;
+	}
+};
 // // Store
 // localStorage.cachedArray = "Smith";
 // // Retrieve

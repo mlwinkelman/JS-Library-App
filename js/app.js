@@ -137,7 +137,10 @@ library.prototype.getRandomAuthor = function(){ // in console,
   return this.bookArray.length <= 0 ? null : this.bookArray[randomAuthor].author;
 };
 
-// library1.addBook(book1);
-// library1.addBook(book2);
-// library1.addBook(book3);
-// library1.addBook(book4);
+library1.addBook(book1);
+library1.addBook(book2);
+library1.addBook(book3);
+library1.addBook(book4);
+library1.addBook(book5);
+library1.addBook(book6);
+library1.addBook(book7);

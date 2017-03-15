@@ -30,7 +30,8 @@ $(function(){
 
 library.prototype.init = function(){
 	//Cached selectors here (cache down) that will be reused throughout app
-	this.$jumboTron = $(".jumbotron ul"); // target the output field in html
+	this.$jumboTron = $(".output-box ol"); // target the output field in html
+	this.$jumboTron2 = $(".output-box2 ul"); // target the output field in html
 
 	// creates new empty array called bookArray and assigns it to "library"
 	this.bookArray = new Array();
@@ -119,15 +120,19 @@ library.prototype._getBookByTitle = function(){ // in console, pass actual autho
 	// create container called sValue that contains the string collected from input
 	var sValue = this._getBookTitleValue();
 	var regex = new RegExp(sValue, 'gi');
-  var bookByTitleArray = new Array();
+  // var bookByTitleArray = new Array();
   for (var i = 0; i < this.bookArray.length; i++) {
     if (this.bookArray[i].title.match(regex)) {
-      bookByTitleArray.push(this.bookArray[i]);
+      // bookByTitleArray.push(this.bookArray[i]);
+			this.$jumboTron2.empty();
+			this.$jumboTron2.append("<li><strong>Title: </strong>" + this.bookArray[i].title + "; " +
+				" <strong>Author: </strong>" + this.bookArray[i].author + "; " +
+				" <strong>Pages: </strong>" + this.bookArray[i].numberOfPages + "; " +
+				" <strong>Published: </strong>" + this.bookArray[i].publishDate + "</li>");
     }
   }
-	console.log(bookByTitleArray);
-	// NEED TO ADD DISPLAY OUTPUT!!
-	return bookByTitleArray;
+	// return alert('Please enter a title.');
+	// return bookByTitleArray;
 };
 
 // use jquery to find id of input field
@@ -141,7 +146,6 @@ library.prototype._getBookTitleValue = function(){
       sVal = vInput.toString();
     }
   });
-	console.log(sVal);
   return sVal;
 };
 
@@ -158,11 +162,9 @@ library.prototype._removeBookByTitle = function(){
 			// if it matches, remove it from the array
       this.bookArray.splice(i, 1);
       return true;
-			// if it doesn't match, return alert
-    }  //else if (this.bookArray[i].title != sValue) {
-			//return alert('Unable to find that book.');
-		// }
-} return alert('Please add a title to remove.');
+    }
+	}
+	return alert('Unable to find that title.');
 };
 // use jquery to find id of input field
 // validate that input is not empty string or NaN
@@ -175,7 +177,6 @@ library.prototype._getRemoveBookTitleValue = function(){
       sVal = vInput.toString();
     }
   });
-	// console.log(sVal);
   return sVal;
 };
 
@@ -184,15 +185,20 @@ library.prototype._getBookByAuthor = function(){ // in console, pass actual auth
 	// create container called sValue that contains the string collected from input
 	var sValue = this._getBookByAuthorValue();
 	var regex = new RegExp(sValue, 'gi');
-  var bookByAuthorArray = new Array();
+  // var bookByAuthorArray = [];
+	this.$jumboTron2.empty();
   for (var i = 0; i < this.bookArray.length; i++) {
     if (this.bookArray[i].author.match(regex)) {
-      bookByAuthorArray.push(this.bookArray[i]);
+      // bookByAuthorArray.push(this.bookArray[i]);
+			// this.$jumboTron2.empty();
+			this.$jumboTron2.append("<li><strong>Title: </strong>" + this.bookArray[i].title + "; " +
+				" <strong>Author: </strong>" + this.bookArray[i].author + "; " +
+				" <strong>Pages: </strong>" + this.bookArray[i].numberOfPages + "; " +
+				" <strong>Published: </strong>" + this.bookArray[i].publishDate + "</li>");
     }
   }
-	console.log(bookByAuthorArray);
-	// NEED TO ADD DISPLAY OUTPUT!!!!!
-	return bookByAuthorArray;
+	// return alert('Please enter an author.');
+	// return bookByAuthorArray;
 };
 
 library.prototype._getBookByAuthorValue = function(){
@@ -207,18 +213,24 @@ library.prototype._getBookByAuthorValue = function(){
 };
 
 // REMOVE BOOK BY AUTHOR
-library.prototype._removeBookByAuthor = function(bookAuthor){
+library.prototype._removeBookByAuthor = function(){
 	// create container called sValue that contains the string collected from input
 	var sValue = this._getRemoveBookAuthorValue();
+	// var regex = new RegExp(sValue, 'gi');
 	var isAuthorRemoved = false;
+	// for (var i = 0; i < this.bookArray.length; i++) {
+  //   if (this.bookArray[i].author.match(regex)) {
+
 	for (var i = 0; i < this.bookArray.length; i++) {
     if (this.bookArray[i].author == sValue) {
 			// update output display to reflect removal
-			$('#'+this.bookArray[i].id).remove();
+			$('#'+this.bookArray[i].id).remove(); // IS THIS FLAWED DUE TO GUID??
       this.bookArray.splice(i, 1);
       isAuthorRemoved = true;
     }
-  } return isAuthorRemoved;
+  }
+	// return alert('Unable to find that author.'); // ALERT IS FIRING EVERYTIME!!
+	// return isAuthorRemoved;
 };
 
 library.prototype._getRemoveBookAuthorValue = function(){
@@ -236,19 +248,20 @@ library.prototype._getRemoveBookAuthorValue = function(){
 library.prototype._getRandomBook = function(){
   var randomBook = Math.floor(Math.random() * this.bookArray.length);
 	var book = this.bookArray[randomBook];
-	this.$jumboTron.append("<li id="+book.id+"><strong>Title: </strong>" + book.title + "; " +
+	this.$jumboTron2.empty();
+	this.$jumboTron2.append("<li id="+book.id+"><strong>Title: </strong>" + book.title + "; " +
 		" <strong>Author: </strong>" + book.author + "; " +
 		" <strong>Pages: </strong>" + book.numberOfPages + "; " +
 		" <strong>Published: </strong>" + book.publishDate + "</li>");
-	// console.log(randomBook);
   return this.bookArray.length <= 0 ? null : this.bookArray[randomBook];
 };
 
 // GET RANDOM AUTHOR
-library.prototype._getRandomAuthor = function(){ // in console,
+library.prototype._getRandomAuthor = function(){
   var randomAuthor = Math.floor(Math.random() * this.bookArray.length);
 	var book = this.bookArray[randomAuthor];
-	this.$jumboTron.append("<li id="+book.id+"><strong>Title: </strong>" + book.title + "; " +
+	this.$jumboTron2.empty();
+	this.$jumboTron2.append("<li id="+book.id+"><strong>Title: </strong>" + book.title + "; " +
 		" <strong>Author: </strong>" + book.author + "; " +
 		" <strong>Pages: </strong>" + book.numberOfPages + "; " +
 		" <strong>Published: </strong>" + book.publishDate + "</li>");
@@ -274,11 +287,10 @@ library.prototype._getAuthors = function(){
       authorArray.push(this.bookArray[i].author);
     }
   }
-	// console.log(authorArray);
-	this.$jumboTron.append("<li><strong>Authors in Library: </strong>" + authorArray.join(', ') + "</li>");
+	this.$jumboTron2.empty();
+	this.$jumboTron2.append("<li><strong>Authors in Library: </strong>" + authorArray.join(', ') + "</li>");
 	return authorArray;
 };
-
 
 
 
@@ -290,11 +302,11 @@ library.prototype._getAuthors = function(){
 
 
 //local storage start:
-library.prototype._setObject = function (){
-	// console.log('test');
-	var cachedArray = this.bookArray;
-	// set bookArray to some variable in localstorage
-};
+// library.prototype._setObject = function (){
+// 	// console.log('test');
+// 	var cachedArray = this.bookArray;
+// 	// set bookArray to some variable in localstorage
+// };
 
 // // Store
 // localStorage.cachedArray = "Smith";

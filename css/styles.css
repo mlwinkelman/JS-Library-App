@@ -1,9 +1,23 @@
-#bootstrap-override .border-radius {
+/*.background {
+  background-color: #E6E1C5;
+}*/
+#bootstrap-override .jumbotron {
   border-radius: 1em;
+  background-color: #FF8552;
+}
+#bootstrap-override {
+  padding-left: 0;
+  padding-right: 0;
+  /*border-radius: 0;*/
 }
 .output-box {
   background-color: white;
-  padding: 15px 0;
+  padding: 18px 0;
+  border-radius: 6px;
+}
+.output-box2 {
+  background-color: white;
+  padding: 18px 0;
   border-radius: 6px;
 }
 ul {
@@ -27,3 +41,12 @@ ul {
   height: 100px;
   padding-right: 30px;
 }
+/*.display-4 {
+  color: #D4CB92;
+}*/
+button {
+  width: 137px;
+}
+/*label {
+  font-size: .85em;
+}*/

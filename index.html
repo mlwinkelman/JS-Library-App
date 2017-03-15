@@ -12,102 +12,127 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     </head>
 
-    <body>
+    <body class="background">
       <main id="bootstrap-override" class="container main-container">
-        <div class="jumbotron border-radius mt-5">
+        <div class="jumbotron border-radius mt-3 py-4">
+        <!-- <div class="jumbotron sticky-top border-radius"> -->
           <!-- <img class="icons" src="images/noun_853889_cc.svg"/> -->
           <h1 class="display-4"><img class="icons" src="images/noun_853889_cc.svg"/>My Library App</h1>
           <!-- <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p> -->
           <hr class="my-4">
-          <p class="lead">Output data appears here:</p>
+          <!-- THIS WORKS -->
+          <!-- <p class="lead">My current library contains:</p>
           <div class="output-box">
             <ul></ul>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label">Add a Book</label>
-          <div id="new-book-form" class="col-lg-7 col-sm-12">
-            <input class="form-control font-italic" type="text" placeholder="title" id="example-text-input">
-            <input class="form-control font-italic" type="text" placeholder="author" id="example-text-input">
-            <input class="form-control font-italic" type="text" placeholder="number of pages" id="example-text-input">
-            <input class="form-control text-muted font-italic" type="text" placeholder="year published" id="example-text-input">
-          </div>
-          <div class="col-lg-2 col-sm-12 pt-2">
-            <button id="add-book" type="button" class="btn btn-outline-primary">Submit</button>
-          </div>
-        </div>
-        <!-- <div class="form-group row">
-          <label for="example-text-input" class="col-3 col-form-label">Add Multiple Books</label>
-          <div class="col-7">
-            <input class="form-control font-italic" type="text" placeholder="enter book titles" id="example-text-input">
-          </div>
-          <div class="col-2">
-            <button type="button" class="btn btn-outline-primary">Submit</button>
-          </div>
-        </div> -->
-        <div class="form-group row">
-          <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label">Remove Book by Title</label>
-          <div id="remove-book-title-form" class="col-lg-7 col-sm-12">
-            <input class="form-control font-italic" type="text" placeholder="enter book title" id="example-text-input">
-          </div>
-          <div class="col-lg-2 col-sm-12 pt-2">
-            <button id="remove-book-by-title" type="button" class="btn btn-outline-primary">Submit</button>
+          <hr class="my-4">
+          <p class="lead">Search results:</p>
+          <div class="output-box2">
+            <ul></ul>
+          </div> -->
+
+          <div class="row justify-content-center">
+            <div class="col-lg-6 col-sm-12">
+              <p class="lead pt-3">My current library contains:</p>
+              <div class="output-box pr-3">
+                <ol></ol>
+              </div>
+            </div>
+            <div class="col-lg-6 col-sm-12">
+              <p class="lead pt-3">Search results:</p>
+              <div class="output-box2 pr-3">
+                <ul></ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="form-group row">
-          <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label">Remove Book by Author</label>
-          <div id="remove-book-author-form" class="col-lg-7 col-sm-12">
-            <input class="form-control font-italic" type="text" placeholder="enter author name" id="example-text-input">
+        <div class="container">
+          <div class="form-group row">
+            <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label pt-2 lead">Add a Book</label>
+            <div id="new-book-form" class="col-lg-7 col-sm-12 pt-2">
+              <input class="form-control font-italic" type="text" placeholder="title" id="example-text-input">
+              <input class="form-control font-italic" type="text" placeholder="author" id="example-text-input">
+              <input class="form-control font-italic" type="text" placeholder="number of pages" id="example-text-input">
+              <input class="form-control text-muted font-italic" type="text" placeholder="year published" id="example-text-input">
+            </div>
+            <div class="col-lg-2 col-sm-12 pt-2">
+              <button id="add-book" type="button" class="btn btn-info">Add Book</button>
+            </div>
           </div>
-          <div class="col-lg-2 col-sm-12 pt-2">
-            <button id="remove-book-by-author" type="button" class="btn btn-outline-primary">Submit</button>
+          <!-- <div class="form-group row">
+            <label for="example-text-input" class="col-3 col-form-label">Add Multiple Books</label>
+            <div class="col-7">
+              <input class="form-control font-italic" type="text" placeholder="enter book titles" id="example-text-input">
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-outline-primary">Submit</button>
+            </div>
+          </div> -->
+          <div class="form-group row">
+            <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label pt-2 lead">Remove Book by Title</label>
+            <div id="remove-book-title-form" class="col-lg-7 col-sm-12 pt-2">
+              <input class="form-control font-italic" type="text" placeholder="enter book title" id="example-text-input">
+            </div>
+            <div class="col-lg-2 col-sm-12 pt-2">
+              <button id="remove-book-by-title" type="button" class="btn btn-info">Remove Book</button>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label pt-2 lead">Remove Book by Author</label>
+            <div id="remove-book-author-form" class="col-lg-7 col-sm-12 pt-2">
+              <input class="form-control font-italic" type="text" placeholder="enter author name" id="example-text-input">
+            </div>
+            <div class="col-lg-2 col-sm-12 pt-2">
+              <button id="remove-book-by-author" type="button" class="btn btn-info">Remove Book</button>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label pt-2 lead">Search by Title</label>
+            <div id="get-book-by-title-form" class="col-lg-7 col-sm-12 pt-2">
+              <input class="form-control font-italic" type="text" placeholder="enter book title" id="example-text-input">
+            </div>
+            <div class="col-lg-2 col-sm-12 pt-2">
+              <button id="get-book-by-title" type="button" class="btn btn-info">Search</button>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label pt-2 lead">Search by Author</label>
+            <div id="get-book-by-author-form" class="col-lg-7 col-sm-12 pt-2">
+              <input class="form-control font-italic" type="text" placeholder="enter author name" id="example-text-input">
+            </div>
+            <div class="col-lg-2 col-sm-12 pt-2">
+              <button id="get-book-by-author" type="button" class="btn btn-info">Search</button>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label pt-2 lead">Get Random Book</label>
+            <!-- <div id="get-random-book-form" class="col-lg-7 col-sm-12 pt-2">
+              <input class="form-control font-italic" type="text" placeholder="nothing to enter" id="disabledTextInput" disabled>
+            </div> -->
+            <div class="col-lg-2 col-sm-12 pt-2">
+              <button id="get-random-book" type="button" class="btn btn-info">Get Book</button>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label pt-2 lead">Get Random Author</label>
+            <!-- <div id="get-random-author-form" class="col-lg-7 col-sm-12 pt-2">
+              <input class="form-control font-italic" type="text" placeholder="nothing to enter" id="disabledTextInput" disabled>
+            </div> -->
+            <div class="col-lg-2 col-sm-12 pt-2">
+              <button id="get-random-author" type="button" class="btn btn-info">Get Book</button>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label pt-2 lead">Get All Authors</label>
+            <!-- <div class="col-lg-7 col-sm-12 pt-2">
+              <input class="form-control font-italic" type="text" placeholder="nothing to enter" id="disabledTextInput" disabled>
+            </div> -->
+            <div class="col-lg-2 col-sm-12 pt-2">
+              <button id="get-all-authors" type="button" class="btn btn-info">Get Authors</button>
+            </div>
           </div>
         </div>
-        <div class="form-group row">
-          <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label">Search for Book by Title</label>
-          <div id="get-book-by-title-form" class="col-lg-7 col-sm-12">
-            <input class="form-control font-italic" type="text" placeholder="enter book title" id="example-text-input">
-          </div>
-          <div class="col-lg-2 col-sm-12 pt-2">
-            <button id="get-book-by-title" type="button" class="btn btn-outline-primary">Submit</button>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label">Search for Book by Author</label>
-          <div id="get-book-by-author-form" class="col-lg-7 col-sm-12">
-            <input class="form-control font-italic" type="text" placeholder="enter author name" id="example-text-input">
-          </div>
-          <div class="col-lg-2 col-sm-12 pt-2">
-            <button id="get-book-by-author" type="button" class="btn btn-outline-primary">Submit</button>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label">Search for Random Book</label>
-          <div id="get-random-book-form" class="col-lg-7 col-sm-12">
-            <input class="form-control font-italic" type="text" placeholder="nothing to enter" id="disabledTextInput" disabled>
-          </div>
-          <div class="col-lg-2 col-sm-12 pt-2">
-            <button id="get-random-book" type="button" class="btn btn-outline-primary">Submit</button>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label">Search for Random Author</label>
-          <div id="get-random-author-form" class="col-lg-7 col-sm-12">
-            <input class="form-control font-italic" type="text" placeholder="nothing to enter" id="disabledTextInput" disabled>
-          </div>
-          <div class="col-lg-2 col-sm-12 pt-2">
-            <button id="get-random-author" type="button" class="btn btn-outline-primary">Submit</button>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="example-text-input" class="col-lg-3 col-sm-12 col-form-label">Search for All Authors</label>
-          <div class="col-lg-7 col-sm-12">
-            <input class="form-control font-italic" type="text" placeholder="nothing to enter" id="disabledTextInput" disabled>
-          </div>
-          <div class="col-lg-2 col-sm-12 pt-2">
-            <button id="get-all-authors" type="button" class="btn btn-outline-primary">Submit</button>
-          </div>
-        </div>
+
       </main>
 
 

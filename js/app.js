@@ -259,6 +259,18 @@ library.prototype._removeBookByAuthor = function(){
 	// return alert('Unable to find that author.'); // ALERT IS FIRING EVERYTIME!!
 
 };
+// Shawn's code using .extend which makes a clone and without decrement:
+// Lib.prototype._removeBookByAuthor = function() {
+//     var nArray = $(".jumbotron ul>li");
+//     var author = $("#removeAuthor").val();
+//     var newBookArray = $.extend(true, [], this.myBookArray);
+//     for (i = 0; i < newBookArray.length; i++) {
+//         if (newBookArray[i].author == author) {
+//             nArray[i].remove();
+//             this.myBookArray.splice(i, 1);
+//         }
+//     }
+// };
 
 library.prototype._getRemoveBookAuthorValue = function(){
   var sVal;
